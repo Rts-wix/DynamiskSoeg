@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 public partial class SoegKunder : System.Web.UI.Page
 {
     private string whereClause = "";
+    private SqlCommand cmd = new SqlCommand();
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -24,8 +25,7 @@ public partial class SoegKunder : System.Web.UI.Page
     {
         String conStr = ConfigurationManager.ConnectionStrings["NW1ConnectionString1"].ToString();
         SqlConnection conn = new SqlConnection(conStr);
-
-        SqlCommand cmd = new SqlCommand();
+        
         cmd.Connection = conn;
 
         cmd.CommandText = "SELECT * FROM Customers" + whereClause;
@@ -49,20 +49,23 @@ public partial class SoegKunder : System.Web.UI.Page
         string whereCompanyName = "";
         if (TextBoxCompanyName.Text != "")
         {
-            whereCompanyName = "CompanyName LIKE '%" + TextBoxCompanyName.Text + "%'";
+            whereCompanyName = "CompanyName LIKE '%'+@CompanyName+'%'";
             AddToWhere(whereCompanyName);
+            cmd.Parameters.AddWithValue("CompanyName", TextBoxCompanyName.Text);
         }
 
         string whereContactName = "";
         if (DropDownListContactName.SelectedValue != "")
         {
-            whereContactName = "ContactName = '" + DropDownListContactName.SelectedValue + "'";
+            whereContactName = "ContactName = @ContactName";
             AddToWhere(whereContactName);
+            cmd.Parameters.AddWithValue("ContactName", DropDownListContactName.SelectedValue);
         }
 
         string whereCountries = "";
         if (CheckBoxListCountries.SelectedIndex > 0)
         {
+            int i = 1;
             foreach (ListItem country in CheckBoxListCountries.Items)
             {            
                 if (country.Selected)
@@ -71,7 +74,9 @@ public partial class SoegKunder : System.Web.UI.Page
                     {
                         whereCountries += " OR";
                     }
-                    whereCountries += " Country = '" + country.Value + "'";
+                    whereCountries += " Country = @country" + i;
+                    cmd.Parameters.AddWithValue("country" + i, country.Value);
+                    i++;
                 }
             }
             whereCountries = "(" + whereCountries + ")";
