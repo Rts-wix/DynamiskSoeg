@@ -42,20 +42,20 @@
             <tr>
                 <td class="auto-style2">UnitsInStock</td>
                 <td>
-                    <asp:TextBox ID="TextBoxQtyPerUnit_min0" runat="server" Width="48px"></asp:TextBox>
-                    -<asp:TextBox ID="TextBoxQtyPerUnit_max0" runat="server" Width="48px"></asp:TextBox>
+                    <asp:TextBox ID="TextBoxStockPerUnit_min" runat="server" Width="48px"></asp:TextBox>
+                    -<asp:TextBox ID="TextBoxStockPerUnit_max" runat="server" Width="48px"></asp:TextBox>
                 </td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td class="auto-style2">Discontinued</td>
-                <td>&nbsp;</td>
+                <td>Yes:<asp:CheckBox ID="CheckBox_Discontinued" runat="server"  />No:<asp:CheckBox ID="CheckBox_NotDiscontinued" runat="server" /></td>
                 <td>&nbsp;</td>
             </tr>
             <tr>
                 <td class="auto-style2">&nbsp;</td>
                 <td>
-                    <asp:Button ID="ButtonSoeg" runat="server" Text="Søg" />
+                    <asp:Button ID="ButtonSoeg" runat="server" Text="Søg" OnClick="ButtonSoeg_Click" />
                 </td>
                 <td>&nbsp;</td>
             </tr>
